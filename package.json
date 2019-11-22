@@ -1,0 +1,28 @@
+{
+  "name": "hbs2htl",
+  "version": "0.0.1",
+  "description": "Converts hbs to htl (sightly)",
+  "main": "src/index.js",
+  "author": "Sachin Singh",
+  "license": "MIT",
+  "keywords": [
+    "handlebars",
+    "HTL",
+    "Sightly",
+    "Converter",
+    "Conversion",
+    "Transpiler",
+    "AEM"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scssyworks/hbs2htl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scssyworks/hbs2htl/issues"
+  },
+  "homepage": "https://github.com/scssyworks/hbs2htl#readme",
+  "dependencies": {
+    "htmlparser2": "^4.0.0"
+  }
+}
