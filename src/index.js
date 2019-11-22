@@ -12,5 +12,3 @@ module.exports = class Hbs2htl {
         return this.dom.html();
     }
 }
-
-new Hbs2htl();
