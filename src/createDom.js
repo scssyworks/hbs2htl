@@ -117,9 +117,7 @@ module.exports = class CreateDom {
         return this.newText;
     }
     getTemplate(templateName) {
-        return `<sly data-sly-template.${templateName}="$\{@ ${this.firstLevelRef.join(',')}\}">
-            ${this.html()}
-        </sly>`;
+        return `<sly data-sly-template.${templateName}="$\{@ ${this.firstLevelRef.join(',')}\}">\n${this.html()}\n</sly>`;
     }
     resolveNumber(str) {
         if (typeof str === 'string') {
