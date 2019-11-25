@@ -1,6 +1,6 @@
 {
   "name": "hbs2htl",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Converts hbs to htl (sightly)",
   "main": "src/index.js",
   "author": "Sachin Singh",
