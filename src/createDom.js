@@ -4,7 +4,8 @@ const TagStack = require('./tagStack');
 const ERROR_MSG = 'Some problem occurred while parsing handlebar template.';
 
 module.exports = class CreateDom {
-    constructor(htmlString, resolveToData, contextualTags) {
+    constructor(htmlString, options = {}, contextualTags) {
+        const { resolveToData } = options;
         this.importCounter = 0;
         this.contextualTags = contextualTags || new TagStack();
         this.newText = '';
@@ -67,11 +68,18 @@ module.exports = class CreateDom {
                         params.join(',')
                         }\}">`;
                     this.newText += slyTag;
+                } else if (tag.startsWith('hbs-') && typeof options.transform === 'function') {
+                    this.newText += options.transform({
+                        tag,
+                        props,
+                        type: 'tag',
+                        event: 'onopentag'
+                    });
                 } else {
                     const attr = (Object.keys(props).map(key => {
                         let value = decodeURIComponent(props[key]).trim();
                         if (value.startsWith('<')) {
-                            value = (new CreateDom(value, resolveToData, this.contextualTags)).html();
+                            value = (new CreateDom(value, options, this.contextualTags)).html();
                         }
                         return `${key}="${value}"`;
                     }).join(' ')).trim();
@@ -84,6 +92,13 @@ module.exports = class CreateDom {
                         this.contextualTags.pop();
                     }
                     this.newText += '</sly>';
+                } else if (tag.startsWith('hbs-') && typeof options.transform === 'function') {
+                    this.newText += options.transform({
+                        tag,
+                        props,
+                        type: 'tag',
+                        event: 'onclosetag'
+                    });
                 } else if (!['hbs-render'].includes(tag)) {
                     this.newText += `</${tag}>`;
                 }
@@ -105,6 +120,21 @@ module.exports = class CreateDom {
         return `<sly data-sly-template.${templateName}="$\{@ ${this.firstLevelRef.join(',')}\}">
             ${this.html()}
         </sly>`;
+    }
+    resolveNumber(str) {
+        if (typeof str === 'string') {
+            const strParts = str.split(',').filter(part => !isNaN(part.trim()));
+            if (strParts.length) {
+                return (strParts[0] + strParts.slice(1).map(part => {
+                    part = part.trim();
+                    if (isNaN(part)) {
+                        return `['${part}']`;
+                    }
+                    return `[${part}]`;
+                }).join(''));
+            }
+        }
+        return str;
     }
     getRenderedKey(renderedKey, firstLevelRef, resolveToData) {
         let rootRef = 'data';
@@ -132,7 +162,7 @@ module.exports = class CreateDom {
                 }
             }
         }
-        return this.handleThis(renderedKey, firstLevelRef, resolveToData, rootRef);
+        return this.resolveNumber(this.handleThis(renderedKey, firstLevelRef, resolveToData, rootRef));
     }
     getRenderingVar(props, key, firstLevelRef, resolveToData) {
         let renderedKey = decodeURIComponent(props[key]).trim();
