@@ -69,12 +69,12 @@ module.exports = class CreateDom {
                         }\}">`;
                     this.newText += slyTag;
                 } else if (tag.startsWith('hbs-') && typeof options.transform === 'function') {
-                    this.newText += options.transform({
+                    this.newText += options.transform.apply(this, [{
                         tag,
                         props,
                         type: 'tag',
                         event: 'onopentag'
-                    });
+                    }]);
                 } else {
                     const attr = (Object.keys(props).map(key => {
                         let value = decodeURIComponent(props[key]).trim();
@@ -93,12 +93,12 @@ module.exports = class CreateDom {
                     }
                     this.newText += '</sly>';
                 } else if (tag.startsWith('hbs-') && typeof options.transform === 'function') {
-                    this.newText += options.transform({
+                    this.newText += options.transform.apply(this, [{
                         tag,
                         props,
                         type: 'tag',
                         event: 'onclosetag'
-                    });
+                    }]);
                 } else if (!['hbs-render'].includes(tag)) {
                     this.newText += `</${tag}>`;
                 }
