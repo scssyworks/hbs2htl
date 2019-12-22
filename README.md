@@ -1,12 +1,12 @@
 # hbs2htl
-Coverts handlebar templates to HTL (sightly)
+Converts handlebar templates to HTL (sightly)
 
 # How to use?
 
 ## Install
 
 ```sh
-npm install --save hbs2htl;
+npm install --save hbs2htl
 ```
 
 ## Import
@@ -42,14 +42,14 @@ console.log(hbs2htl.html); // Compatible HTL template
 
 ## Compiling unknown expressions
 
-You can write your own transformation to compile unkown expressions. This is useful if you are using custom helpers.
+You can write your own transformations to compile unkown expressions. This is useful if you are using custom helpers.
 
 Handlebars:
 
 ```hbs
 {{#eachCustom this}}
    {{this}}
-{{/each}}
+{{/eachCustom}}
 ```
 
 Default output:
@@ -75,8 +75,8 @@ console.log((new Hbs2htl(hbsText, {
 })).html);
 ```
 
-Transform function is called only for unknown handlebar tags.
+Transform function is called only for unknown handlebar expressions.
 
 # DISCLAIMER
 
-This is the first package ever published and is extremely buggy. It's not recommended to use this package in production. However, if you were looking for this, this is where you start. I have attempted to build a framework solid enough to extend and improve. You are most welcome to contribute to this project.
+This package is still in a very early stage and is extremely buggy. Don't use this package in production yet. Your contributions are welcome! Help us improve this project.
